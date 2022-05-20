@@ -8,10 +8,9 @@ import loginService from './services/login'
 import './index.css'
 
 const App = () => {
+  const [loginVisible, setLoginVisible] = useState(false)
   const [blogs, setBlogs] = useState([])
-
   const [user, setUser] = useState(null)
-
   const [message, setMessage] = useState(null)
 
   useEffect(() => {
@@ -50,10 +49,30 @@ const App = () => {
     setTimeout(() => setMessage(null), 5000)
   }
 
+  const loginForm = () => {
+    const hideWhenVisible = { display: loginVisible ? 'none' : '', }
+    const showWhenVisible = { display: loginVisible ? '' : 'none', }
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}>log in</button>
+        </div>
+        <div style={showWhenVisible}>
+          <LoginForm newLogin={handleLogin} message={message} setMessage={setMessage} />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
+  }
+
 
   return (
     <>
-      {user === null ? <LoginForm newLogin={handleLogin} message={message} setMessage={setMessage} /> :
+      {user === null
+        ?
+        loginForm()
+        :
         <div>
           <h2>blogs</h2>
           <Notification message={message} />
