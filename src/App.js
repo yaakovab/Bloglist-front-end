@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
@@ -8,7 +9,7 @@ import loginService from './services/login'
 import './index.css'
 
 const App = () => {
-  const [loginVisible, setLoginVisible] = useState(false)
+
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
@@ -49,29 +50,16 @@ const App = () => {
     setTimeout(() => setMessage(null), 5000)
   }
 
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '', }
-    const showWhenVisible = { display: loginVisible ? '' : 'none', }
 
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm newLogin={handleLogin} message={message} setMessage={setMessage} />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
-    )
-  }
 
 
   return (
     <>
       {user === null
         ?
-        loginForm()
+        <Togglable buttonLabel='log in'>
+          <LoginForm newLogin={handleLogin} message={message} setMessage={setMessage} />
+        </Togglable>
         :
         <div>
           <h2>blogs</h2>
