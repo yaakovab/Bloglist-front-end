@@ -53,7 +53,11 @@ const App = () => {
     setTimeout(() => setMessage(null), 5000)
   }
 
-
+  const handleLikeButton = async (updatedBlog) => {
+    const response = await blogService.update(updatedBlog.id, updatedBlog)
+    // console.log(response)
+    setBlogs(blogs.map(blog => blog.id !== response.data.id ? blog : response.data))
+  }
 
 
   return (
@@ -72,7 +76,7 @@ const App = () => {
             <NewBlogForm addNewBlog={addBlog} />
           </Togglable>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} likeButton={handleLikeButton} />
           )}
         </div>}
 
