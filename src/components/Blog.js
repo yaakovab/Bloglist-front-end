@@ -2,8 +2,9 @@ import { useState } from 'react'
 
 
 
-const Blog = ({ blog, likeButton }) => {
+const Blog = ({ blog, likeButton, delBlog, user }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
+
 
   const handleLikeButton = async () => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
@@ -44,6 +45,10 @@ const Blog = ({ blog, likeButton }) => {
           <li>
             {blog.user.name}
           </li>
+          {user.username === blog.user.username ?
+            <li>
+              <button style={{ backgroundColor: 'lightblue' }} onClick={() => delBlog(blog)} >remove</button>
+            </li> : null}
         </ul>
       </div>
     </div>

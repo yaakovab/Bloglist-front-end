@@ -19,6 +19,12 @@ const update = async (id, updatedBlog) => {
   return axios.put(`${baseUrl}/${id}`, updatedBlog)
 }
 
+const del = id => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  return axios.delete(`${baseUrl}/${id}`, config)
+}
 
 let token = null
 
@@ -26,4 +32,4 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-export default { getAll, create, update, setToken }
+export default { getAll, create, update, del, setToken }

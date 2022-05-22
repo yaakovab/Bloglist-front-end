@@ -7,6 +7,7 @@ import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
+import axios from 'axios'
 
 const App = () => {
 
@@ -18,7 +19,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
     )
   }, [])
 
@@ -53,10 +54,17 @@ const App = () => {
     setTimeout(() => setMessage(null), 5000)
   }
 
+  const removeBlog = async (blogToRemove) => {
+    if (window.confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`)) {
+      await blogService.del(blogToRemove.id)
+      setBlogs(blogs.filter(blog => blog.id !== blogToRemove.id))
+    }
+  }
+
   const handleLikeButton = async (updatedBlog) => {
     const response = await blogService.update(updatedBlog.id, updatedBlog)
     // console.log(response)
-    setBlogs(blogs.map(blog => blog.id !== response.data.id ? blog : response.data))
+    setBlogs(blogs.sort((a, b) => b.likes - a.likes).map(blog => blog.id !== response.data.id ? blog : response.data))
   }
 
 
@@ -76,7 +84,7 @@ const App = () => {
             <NewBlogForm addNewBlog={addBlog} />
           </Togglable>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} likeButton={handleLikeButton} />
+            <Blog key={blog.id} blog={blog} likeButton={handleLikeButton} delBlog={removeBlog} user={user} />
           )}
         </div>}
 
