@@ -5,10 +5,10 @@ import { useState } from 'react'
 const Blog = ({ blog, likeButton, delBlog, user }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
 
+  const handleViewHideButton = () => setDetailsVisible(!detailsVisible)
 
   const handleLikeButton = async () => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
-    // console.log(updatedBlog)
     likeButton(updatedBlog)
   }
 
@@ -25,16 +25,16 @@ const Blog = ({ blog, likeButton, delBlog, user }) => {
 
 
   return (
-    <div style={blogStyle}>
-      <div style={hideWhenVisible}>
+    <div style={blogStyle} className="blog-container">
+      <div style={hideWhenVisible} className="title-author-hide-when-visible">
         {blog.title} {blog.author}
-        <button onClick={() => setDetailsVisible(true)}>view</button>
+        <button onClick={handleViewHideButton}>view</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="blog-content-show-when-visible">
         <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
           <li>
             {blog.title} {blog.author}
-            <button onClick={() => setDetailsVisible(false)}>hide</button>
+            <button onClick={handleViewHideButton}>hide</button>
           </li>
           <li>
             {blog.url}
@@ -43,12 +43,12 @@ const Blog = ({ blog, likeButton, delBlog, user }) => {
             likes {blog.likes} <button onClick={handleLikeButton}>like</button>
           </li>
           <li>
-            {blog.user.name}
+            {user ? blog.user.name : null}
           </li>
-          {user.username === blog.user.username ?
+          {user ? (user.username === blog.user.username ?
             <li>
               <button style={{ backgroundColor: 'lightblue' }} onClick={() => delBlog(blog)} >remove</button>
-            </li> : null}
+            </li> : null) : null}
         </ul>
       </div>
     </div>
