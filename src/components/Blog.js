@@ -28,26 +28,26 @@ const Blog = ({ blog, likeButton, delBlog, user }) => {
     <div style={blogStyle} className="blog-container">
       <div style={hideWhenVisible} className="title-author-hide-when-visible">
         {blog.title} {blog.author}
-        <button onClick={handleViewHideButton}>view</button>
+        <button id="view-button" onClick={handleViewHideButton}>view</button>
       </div>
       <div style={showWhenVisible} className="blog-content-show-when-visible">
         <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
           <li>
             {blog.title} {blog.author}
-            <button onClick={handleViewHideButton}>hide</button>
+            <button id="hide-button" onClick={handleViewHideButton}>hide</button>
           </li>
           <li>
             {blog.url}
           </li>
           <li>
-            likes {blog.likes} <button onClick={handleLikeButton}>like</button>
+            likes {blog.likes} <button id="like-button" onClick={handleLikeButton}>like</button>
           </li>
           <li>
             {user ? blog.user.name : null}
           </li>
           {user ? (user.username === blog.user.username ?
             <li>
-              <button style={{ backgroundColor: 'lightblue' }} onClick={() => delBlog(blog)} >remove</button>
+              <button id="delete-button" style={{ backgroundColor: 'lightblue' }} onClick={() => delBlog(blog)} >remove</button>
             </li> : null) : null}
         </ul>
       </div>
